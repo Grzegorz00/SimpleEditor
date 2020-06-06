@@ -20,6 +20,15 @@ public class Main {
         jf.setLocationRelativeTo(null);
         jf.setLayout(new BorderLayout());
 
+        MenuBar menu = new MenuBar();
+        jf.add(menu, BorderLayout.PAGE_START);
+
+        JTextArea jTextArea = new JTextArea();
+        jf.add(jTextArea, BorderLayout.CENTER);
+
+        //jf.setContentPane(b);
+        //jf.pack();
+
         jf.setVisible(true);
     }
 }
