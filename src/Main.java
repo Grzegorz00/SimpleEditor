@@ -23,11 +23,11 @@ public class Main {
         MenuBar menu = new MenuBar();
         jf.add(menu, BorderLayout.PAGE_START);
 
-        JTextArea jTextArea = new JTextArea();
+        JTextArea jTextArea = new JTextArea(20,40);
         jf.add(jTextArea, BorderLayout.CENTER);
 
         //jf.setContentPane(b);
-        //jf.pack();
+        jf.pack();
 
         jf.setVisible(true);
     }
