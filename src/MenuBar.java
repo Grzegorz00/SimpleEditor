@@ -1,11 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class MenuBar extends JMenuBar {
 
@@ -43,23 +37,16 @@ public class MenuBar extends JMenuBar {
     private JMenuItem[] createFileItems(){
 
         //creating new items
-        JMenuItem item1 = new JMenuItem("Open");
-        JMenuItem item2 = new JMenuItem("Save");
-        JMenuItem item3 = new JMenuItem("Save As");
-        JMenuItem item4 = new JMenuItem("Exit");
+        JMenuItem item1 = new JMenuItem("Open",'O');
+        JMenuItem item2 = new JMenuItem("Save",'S');
+        JMenuItem item3 = new JMenuItem("Save As",'a');
+        JMenuItem item4 = new JMenuItem("Exit",'x');
 
         // setting shortcuts
-        item1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        item2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        item3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        item4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-
-        //setting mnemonics
-        item1.setMnemonic('O');
-        item2.setMnemonic('S');
-        item3.setMnemonic('a');
-        item4.setMnemonic('x');
-
+        item1.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
+        item2.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
+        item3.setAccelerator(KeyStroke.getKeyStroke("ctrl A"));
+        item4.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
 
         JMenuItem fileItems[] = new JMenuItem[]{
             item1,
@@ -74,25 +61,15 @@ public class MenuBar extends JMenuBar {
     private JMenuItem[] createEditItems() {
 
         //creating items for submenu "Adresy"
-        JMenuItem item00 = new JMenuItem("Praca");
-        JMenuItem item01 = new JMenuItem("Dom");
-        JMenuItem item02 = new JMenuItem("Szkola");
+        JMenuItem item00 = new JMenuItem("Praca",'P');
+        JMenuItem item01 = new JMenuItem("Dom",'D');
+        JMenuItem item02 = new JMenuItem("Szkola",'S');
 
         // setting shortcuts in submenu
-        item00.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_P, ActionEvent.CTRL_MASK + InputEvent.SHIFT_DOWN_MASK
-        ));
-        item01.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_D, ActionEvent.CTRL_MASK + InputEvent.SHIFT_DOWN_MASK
-        ));
-        item02.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, ActionEvent.CTRL_MASK + InputEvent.SHIFT_DOWN_MASK
-        ));
+        item00.setAccelerator(KeyStroke.getKeyStroke("ctrl shift P"));
+        item01.setAccelerator(KeyStroke.getKeyStroke("ctrl shift D"));
+        item02.setAccelerator(KeyStroke.getKeyStroke("ctrl shift S"));
 
-        //setting mnemonics in submenu
-        item00.setMnemonic('P');
-        item01.setMnemonic('D');
-        item02.setMnemonic('S');
 
         //array with submenu items
         JMenuItem adresyItems[] = new JMenuItem[]{

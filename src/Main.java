@@ -26,7 +26,8 @@ public class Main {
         JTextArea jTextArea = new JTextArea(20,40);
         jf.add(jTextArea, BorderLayout.CENTER);
 
-        //jf.setContentPane(b);
+        StatusBar statusBar = new StatusBar();
+        jf.add(statusBar, BorderLayout.PAGE_END);
         jf.pack();
 
         jf.setVisible(true);
