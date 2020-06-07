@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MenuBar extends JMenuBar {
@@ -23,11 +24,12 @@ public class MenuBar extends JMenuBar {
         menu = new JMenu("Edit");
         arrMI = createEditItems();
         addJMenuItems(menu, arrMI, false);
+        add(menu);
 
-        /*//Options item
+        //Options item
         menu = new JMenu("Options");
         arrMI = createOptionsItems();
-        addJMenuItems(menu, arrMI, false);*/
+        addJMenuItems(menu, arrMI, false);
 
         add(menu);
     }
@@ -108,10 +110,73 @@ public class MenuBar extends JMenuBar {
         return editItems;
     }
 
-    /*private JMenuItem[] createOptionsItems(){
+    private JMenuItem[] createOptionsItems(){
+
+        JRadioButtonMenuItem[] colorArray;
 
 
-    }*/
+        colorArray = makeColorItemsTable();
+        JMenu item1 = new JMenu("Foreground");
+        addJMenuItems(item1,colorArray, false);
+
+        colorArray = makeColorItemsTable();
+        JMenu item2 = new JMenu("Background");
+        addJMenuItems(item2,colorArray, false);
+
+        JMenuItem fontArray[] = makeFontSizeTable();
+        JMenu item3 = new JMenu("Font size");
+        addJMenuItems(item3,fontArray, false);
+
+        //array with items from "options" menu
+        JMenuItem optionItems[] = new JMenuItem[]{
+                item1,
+                item2,
+                item3
+        };
+
+        return optionItems;
+    }
+
+    public JRadioButtonMenuItem[] makeColorItemsTable(){
+        String colorsString [] = new String[]{
+                "Green",
+                "Orange",
+                "Red",
+                "Black",
+                "White",
+                "Yellow",
+                "Blue"
+        };
+        Color colors [] = new Color[]{
+                Color.green,
+                Color.orange,
+                Color.red,
+                Color.black,
+                Color.white,
+                Color.yellow,
+                Color.blue
+        };
+
+        JRadioButtonMenuItem[] colorArray =  new JRadioButtonMenuItem[colors.length];
+
+        for (int i = 0; i < colors.length; i++){
+            colorArray[i] = new JRadioButtonMenuItem(colorsString[i], new ColorButtonIcon(colors[i]));
+            colorArray[i].setForeground(colors[i]);
+        }
+
+        return colorArray;
+    }
+
+    public JMenuItem[] makeFontSizeTable(){
+
+        JMenuItem fontArray[] = new JMenuItem[9];
+        for(int i = 0; i < fontArray.length; i++){
+            fontArray[i] = new JMenuItem(8 + i*2 + " pts");
+            fontArray[i].setFont(getFont().deriveFont((float)8+i*2));
+        }
+
+        return fontArray;
+    }
 
     public void addJMenuItems(JMenu menu, JMenuItem arrMI[], boolean separator){
         for(int i = 0; i< arrMI.length; i++) {
