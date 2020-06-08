@@ -2,17 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private JMenu menu;
     private JMenuItem arrFile[], arrEdit[], arrOptions[], arrAdresses[], arrCollorItems[], arrFontSizeItems[];
     StatusBar statusBar;
-    TextField textField;
+    EditorTextArea editorTextArea;
+    JFrame myJFrame;
+    private String filePath = null;
 
-    public MenuBar(StatusBar statusBar, TextField textField){
+    public MenuBar(StatusBar statusBar, EditorTextArea editorTextArea, JFrame myJFrame){
         this.statusBar = statusBar;
-        this.textField = textField;
+        this.editorTextArea = editorTextArea;
+        this.myJFrame = myJFrame;
 
         //File item
         menu = new JMenu("File");
@@ -33,12 +40,6 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         add(menu);
     }
-
-    /*ArrayList<ActionListener> actionListeners = new ArrayList<>();
-
-    public void addActionListener(ActionListener al){
-        actionListeners.add(al);
-    }*/
 
     private void createFileItems(){
 
@@ -174,7 +175,71 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        arrFileActions(e);
+
+    }
+
+    public void arrFileActions(ActionEvent e){
         Object source = e.getSource();
 
+
+        if(source == arrFile[0]){
+            // Open file
+            openFile();
+        } else if(source == arrFile[1]){
+            // Save file
+            savingFile(filePath);
+            myJFrame.setTitle("Simple editor - " + filePath);
+        } else if(source == arrFile[2]){
+            // Save as file
+            savingFile(null);
+            myJFrame.setTitle("Simple editor - " + filePath);
+        }
+        if(source == arrFile[3]){
+            //Exit
+            myJFrame.dispose();
+        }
+    }
+
+    private void openFile(){
+        JFileChooser fc = new JFileChooser();
+        if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            filePath = fc.getSelectedFile().getAbsolutePath();
+            try {
+                File file = new File(filePath);
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNext()){
+                    editorTextArea.appendText(scanner.nextLine() + "\n");
+                }
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            statusBar.setFileStatus("saved");
+        }
+    }
+
+    private void savingFile(String filePath){
+        if(filePath == null){
+            System.out.println("kurwa dlaczego");
+            JFileChooser fc = new JFileChooser();
+            if (fc.showSaveDialog(null) != JFileChooser.CANCEL_OPTION)
+                filePath = fc.getSelectedFile().getAbsolutePath();
+        }
+        if(filePath != null){
+            File file = new File(filePath);
+            try {
+                PrintWriter pw = new PrintWriter(file);
+                Scanner scanner = new Scanner(editorTextArea.getText());
+                while (scanner.hasNext())
+                    pw.println(scanner.nextLine() + "\n");
+                pw.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        statusBar.setFileStatus("saved");
     }
 }
