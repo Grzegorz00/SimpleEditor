@@ -1,29 +1,35 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MenuBar extends JMenuBar {
+public class MenuBar extends JMenuBar implements ActionListener {
 
-    JMenu menu;
-    JMenuItem arrMI[];
+    private JMenu menu;
+    private JMenuItem arrFile[], arrEdit[], arrOptions[], arrAdresses[], arrCollorItems[], arrFontSizeItems[];
+    StatusBar statusBar;
+    TextField textField;
 
-    public MenuBar(){
+    public MenuBar(StatusBar statusBar, TextField textField){
+        this.statusBar = statusBar;
+        this.textField = textField;
 
         //File item
         menu = new JMenu("File");
-        arrMI = createFileItems();
-        addJMenuItems(menu, arrMI, true);
+        createFileItems();
+        addJMenuItems(menu, arrFile, true);
         add(menu);
 
         //Edit item
         menu = new JMenu("Edit");
-        arrMI = createEditItems();
-        addJMenuItems(menu, arrMI, false);
+        createEditItems();
+        addJMenuItems(menu, arrEdit, false);
         add(menu);
 
         //Options item
         menu = new JMenu("Options");
-        arrMI = createOptionsItems();
-        addJMenuItems(menu, arrMI, false);
+        createOptionsItems();
+        addJMenuItems(menu, arrOptions, false);
 
         add(menu);
     }
@@ -34,87 +40,83 @@ public class MenuBar extends JMenuBar {
         actionListeners.add(al);
     }*/
 
-    private JMenuItem[] createFileItems(){
+    private void createFileItems(){
 
         //creating new items
-        JMenuItem item1 = new JMenuItem("Open",'O');
-        JMenuItem item2 = new JMenuItem("Save",'S');
-        JMenuItem item3 = new JMenuItem("Save As",'a');
-        JMenuItem item4 = new JMenuItem("Exit",'x');
+        JMenuItem item0 = new JMenuItem("Open",'O');
+        JMenuItem item1 = new JMenuItem("Save",'S');
+        JMenuItem item2 = new JMenuItem("Save As",'a');
+        JMenuItem item3 = new JMenuItem("Exit",'x');
 
         // setting shortcuts
-        item1.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
-        item2.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
-        item3.setAccelerator(KeyStroke.getKeyStroke("ctrl A"));
-        item4.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
+        item0.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
+        item1.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
+        item2.setAccelerator(KeyStroke.getKeyStroke("ctrl A"));
+        item3.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
 
-        JMenuItem fileItems[] = new JMenuItem[]{
+        arrFile = new JMenuItem[]{
+            item0,
             item1,
             item2,
-            item3,
-            item4
+            item3
         };
 
-        return fileItems;
+        // adding actions
+        for (JMenuItem item : arrFile)
+            item.addActionListener(this);
+
     }
 
-    private JMenuItem[] createEditItems() {
+    private void createEditItems() {
 
-        //creating items for submenu "Adresy"
-        JMenuItem item00 = new JMenuItem("Praca",'P');
-        JMenuItem item01 = new JMenuItem("Dom",'D');
-        JMenuItem item02 = new JMenuItem("Szkola",'S');
+        //creating items for submenu "Adresses"
+        JMenuItem item00 = new JMenuItem("Work",'W');
+        JMenuItem item01 = new JMenuItem("Home",'H');
+        JMenuItem item02 = new JMenuItem("School",'S');
 
         // setting shortcuts in submenu
-        item00.setAccelerator(KeyStroke.getKeyStroke("ctrl shift P"));
-        item01.setAccelerator(KeyStroke.getKeyStroke("ctrl shift D"));
+        item00.setAccelerator(KeyStroke.getKeyStroke("ctrl shift W"));
+        item01.setAccelerator(KeyStroke.getKeyStroke("ctrl shift H"));
         item02.setAccelerator(KeyStroke.getKeyStroke("ctrl shift S"));
 
 
         //array with submenu items
-        JMenuItem adresyItems[] = new JMenuItem[]{
+        arrAdresses = new JMenuItem[]{
                 item00,
                 item01,
                 item02
         };
 
         //new menuItem for "edit" menu
-        JMenu item1 = new JMenu("Adresy");
-        addJMenuItems(item1, adresyItems,false);
+        JMenu item0 = new JMenu("Adresses");
+        addJMenuItems(item0, arrAdresses,false);
         //array with items from "edit" menu
-        JMenuItem editItems[] = new JMenuItem[]{item1};
-
-        return editItems;
+        arrEdit = new JMenuItem[]{item0};
     }
 
-    private JMenuItem[] createOptionsItems(){
+    private void createOptionsItems(){
 
-        JRadioButtonMenuItem[] colorArray;
+        makeColorItemsTable2();
+        JMenu item0 = new JMenu("Foreground");
+        addJMenuItems(item0,arrCollorItems, false);
 
+        makeColorItemsTable2();
+        JMenu item1 = new JMenu("Background");
+        addJMenuItems(item1,arrCollorItems, false);
 
-        colorArray = makeColorItemsTable();
-        JMenu item1 = new JMenu("Foreground");
-        addJMenuItems(item1,colorArray, false);
-
-        colorArray = makeColorItemsTable();
-        JMenu item2 = new JMenu("Background");
-        addJMenuItems(item2,colorArray, false);
-
-        JMenuItem fontArray[] = makeFontSizeTable();
-        JMenu item3 = new JMenu("Font size");
-        addJMenuItems(item3,fontArray, false);
+        makeFontSizeTable();
+        JMenu item2 = new JMenu("Font size");
+        addJMenuItems(item2,arrFontSizeItems, false);
 
         //array with items from "options" menu
-        JMenuItem optionItems[] = new JMenuItem[]{
+        arrOptions = new JMenuItem[]{
+                item0,
                 item1,
-                item2,
-                item3
+                item2
         };
-
-        return optionItems;
     }
 
-    public JRadioButtonMenuItem[] makeColorItemsTable(){
+    public void makeColorItemsTable2(){
         String colorsString [] = new String[]{
                 "Green",
                 "Orange",
@@ -134,25 +136,28 @@ public class MenuBar extends JMenuBar {
                 Color.blue
         };
 
-        JRadioButtonMenuItem[] colorArray =  new JRadioButtonMenuItem[colors.length];
+        arrCollorItems =  new JRadioButtonMenuItem[colors.length];
 
         for (int i = 0; i < colors.length; i++){
-            colorArray[i] = new JRadioButtonMenuItem(colorsString[i], new ColorButtonIcon(colors[i]));
-            colorArray[i].setForeground(colors[i]);
+            arrCollorItems[i] = new JRadioButtonMenuItem(colorsString[i], new ColorButtonIcon(colors[i]));
+            arrCollorItems[i].setForeground(colors[i]);
         }
 
-        return colorArray;
+        ButtonGroup buttonGroup = new ButtonGroup();
+        for(JMenuItem item : arrCollorItems){
+            buttonGroup.add(item);
+        }
+
     }
 
-    public JMenuItem[] makeFontSizeTable(){
+    public void makeFontSizeTable(){
 
-        JMenuItem fontArray[] = new JMenuItem[9];
-        for(int i = 0; i < fontArray.length; i++){
-            fontArray[i] = new JMenuItem(8 + i*2 + " pts");
-            fontArray[i].setFont(getFont().deriveFont((float)8+i*2));
+        arrFontSizeItems = new JMenuItem[9];
+        for(int i = 0; i < arrFontSizeItems.length; i++){
+            arrFontSizeItems[i] = new JMenuItem(8 + i*2 + " pts");
+            arrFontSizeItems[i].setFont(getFont().deriveFont((float)8+i*2));
         }
 
-        return fontArray;
     }
 
     public void addJMenuItems(JMenu menu, JMenuItem arrMI[], boolean separator){
@@ -164,5 +169,11 @@ public class MenuBar extends JMenuBar {
             }
             menu.add(arrMI[i]);
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+
     }
 }
