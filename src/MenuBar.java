@@ -10,12 +10,14 @@ import java.util.Scanner;
 public class MenuBar extends JMenuBar implements ActionListener {
 
     private JMenu menu;
-    private JMenuItem arrFile[], arrEdit[], arrOptions[], arrAdresses[], arrCollorItems[], arrFontSizeItems[];
+    private JMenuItem arrFile[], arrEdit[], arrOptions[], arrAdresses[], arrCollorItemsFor[], arrCollorItemsBack[], arrFontSizeItems[];
     StatusBar statusBar;
     EditorTextArea editorTextArea;
     JFrame myJFrame;
     private String filePath = null;
     private String adressesString[];
+    Color colors [];
+    int fontSize[];
 
     public MenuBar(StatusBar statusBar, EditorTextArea editorTextArea, JFrame myJFrame){
         this.statusBar = statusBar;
@@ -112,17 +114,25 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private void createOptionsItems(){
 
-        makeAllColorItemsArray(); // filling the "allColorItems" array with colors
+        arrCollorItemsFor = makeAllColorItemsArray(); // filling the "allColorItems" array with colors
         JMenu item0 = new JMenu("Foreground"); // creating submenu with foreground colors
-        addJMenuItems(item0,arrCollorItems, false); // adding colors from "allColorItems" array to the "item0" submenu
+        addJMenuItems(item0,arrCollorItemsFor, false); // adding colors from "allColorItems" array to the "item0" submenu
 
-        makeAllColorItemsArray();
+        arrCollorItemsBack = makeAllColorItemsArray();
         JMenu item1 = new JMenu("Background");
-        addJMenuItems(item1,arrCollorItems, false);
+        addJMenuItems(item1,arrCollorItemsBack, false);
 
         makeAllFontSizeItemArray();
         JMenu item2 = new JMenu("Font size");
         addJMenuItems(item2,arrFontSizeItems, false);
+
+        // adding actions
+        for (JMenuItem item : arrCollorItemsFor)
+            item.addActionListener(this);
+        for (JMenuItem item : arrCollorItemsBack)
+            item.addActionListener(this);
+        for (JMenuItem item : arrFontSizeItems)
+            item.addActionListener(this);
 
         //adding items do the "options" menu
         arrOptions = new JMenuItem[]{
@@ -132,7 +142,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         };
     }
 
-    public void makeAllColorItemsArray(){
+    public JMenuItem[] makeAllColorItemsArray(){
         String colorsString [] = new String[]{
                 "Green",
                 "Orange",
@@ -142,7 +152,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 "Yellow",
                 "Blue"
         };
-        Color colors [] = new Color[]{
+        colors = new Color[]{
                 Color.green,
                 Color.orange,
                 Color.red,
@@ -152,7 +162,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 Color.blue
         };
 
-        arrCollorItems =  new JRadioButtonMenuItem[colors.length];
+        JMenuItem arrCollorItems[] =  new JRadioButtonMenuItem[colors.length];
 
         for (int i = 0; i < colors.length; i++){
             arrCollorItems[i] = new JRadioButtonMenuItem(colorsString[i], new ColorButtonIcon(colors[i]));
@@ -163,15 +173,20 @@ public class MenuBar extends JMenuBar implements ActionListener {
         for(JMenuItem item : arrCollorItems){
             buttonGroup.add(item);
         }
-
+        return arrCollorItems;
     }
 
     public void makeAllFontSizeItemArray(){
 
+        fontSize = new int[9];
+        for(int i = 0; i < fontSize.length; i++){
+            fontSize[i] = 8 + i*2;
+        }
+
         arrFontSizeItems = new JMenuItem[9];
         for(int i = 0; i < arrFontSizeItems.length; i++){
-            arrFontSizeItems[i] = new JMenuItem(8 + i*2 + " pts");
-            arrFontSizeItems[i].setFont(getFont().deriveFont((float)8+i*2));
+            arrFontSizeItems[i] = new JMenuItem(fontSize[i] + " pts");
+            arrFontSizeItems[i].setFont(getFont().deriveFont((float)fontSize[i]));
         }
 
     }
@@ -192,9 +207,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         arrFileActions(e);
         arrEditActions(e);
+        arrOptionsActions(e);
 
     }
-
 
     public void arrFileActions(ActionEvent e){
         Object source = e.getSource();
@@ -226,6 +241,35 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 editorTextArea.insertTextCarrot(adressesString[i]);
                 statusBar.setFileStatus("modified");
                 i = adressesString.length;
+            }
+        }
+
+    }
+
+    private void arrOptionsActions(ActionEvent e){
+        Object source = e.getSource();
+
+        //foreground actions
+        for(int i = 0; i < arrCollorItemsFor.length; i++) {
+            if (source == arrCollorItemsFor[i]) {
+                editorTextArea.textArea.setForeground(colors[i]);
+                i = arrCollorItemsFor.length;
+            }
+        }
+
+        //background actions
+        for(int i = 0; i < arrCollorItemsBack.length; i++) {
+            if (source == arrCollorItemsBack[i]) {
+                editorTextArea.textArea.setBackground(colors[i]);
+                i = arrCollorItemsBack.length;
+            }
+        }
+
+        //font size actions
+        for(int i = 0; i < arrFontSizeItems.length; i++) {
+            if (source == arrFontSizeItems[i]) {
+                editorTextArea.setFontSize(fontSize[i]);
+                i = arrFontSizeItems.length;
             }
         }
 
