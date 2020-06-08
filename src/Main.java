@@ -15,21 +15,20 @@ public class Main {
     protected void createGUI()
     {
         JFrame jf = new JFrame();
-        jf.setTitle("Simple editor - ?????????");
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
         jf.setLayout(new BorderLayout());
 
-        MenuBar menu = new MenuBar();
-        jf.add(menu, BorderLayout.PAGE_START);
-
-        JTextArea jTextArea = new JTextArea(20,40);
-        jf.add(jTextArea, BorderLayout.CENTER);
-
         StatusBar statusBar = new StatusBar();
+        EditorTextArea editorTextArea = new EditorTextArea(20,40,statusBar);
+        MenuBar menu = new MenuBar(statusBar,editorTextArea,jf);
+
+        jf.add(menu, BorderLayout.PAGE_START);
+        jf.add(editorTextArea, BorderLayout.CENTER);
         jf.add(statusBar, BorderLayout.PAGE_END);
         jf.pack();
 
+        jf.setTitle("Simple editor - untitled");
         jf.setVisible(true);
     }
 }
