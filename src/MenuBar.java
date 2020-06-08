@@ -15,11 +15,13 @@ public class MenuBar extends JMenuBar implements ActionListener {
     EditorTextArea editorTextArea;
     JFrame myJFrame;
     private String filePath = null;
+    private String adressesString[];
 
     public MenuBar(StatusBar statusBar, EditorTextArea editorTextArea, JFrame myJFrame){
         this.statusBar = statusBar;
         this.editorTextArea = editorTextArea;
         this.myJFrame = myJFrame;
+        fillStringAdresses();
 
         //File item
         menu = new JMenu("File");
@@ -39,6 +41,14 @@ public class MenuBar extends JMenuBar implements ActionListener {
         addJMenuItems(menu, arrOptions, false);
 
         add(menu);
+    }
+
+    private void fillStringAdresses() {
+        adressesString = new String[]{
+                "//work adress",
+                "//home adress",
+                "//school adress"
+        };
     }
 
     private void createFileItems(){
@@ -87,6 +97,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 item01,
                 item02
         };
+
+        // adding actions
+        for (JMenuItem item : arrAdresses)
+            item.addActionListener(this);
 
         //adding menu item for "edit" menu
         JMenu item0 = new JMenu("Adresses");
@@ -177,8 +191,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         arrFileActions(e);
+        arrEditActions(e);
 
     }
+
 
     public void arrFileActions(ActionEvent e){
         Object source = e.getSource();
@@ -200,6 +216,19 @@ public class MenuBar extends JMenuBar implements ActionListener {
             //Exit
             myJFrame.dispose();
         }
+    }
+
+    private void arrEditActions(ActionEvent e) {
+        Object source = e.getSource();
+
+        for(int i = 0; i < arrAdresses.length; i++) {
+            if (source == arrAdresses[i]) {
+                editorTextArea.insertTextCarrot(adressesString[i]);
+                statusBar.setFileStatus("modified");
+                i = adressesString.length;
+            }
+        }
+
     }
 
     private void openFile(){
