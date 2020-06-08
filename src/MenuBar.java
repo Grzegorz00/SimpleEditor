@@ -54,6 +54,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         item2.setAccelerator(KeyStroke.getKeyStroke("ctrl A"));
         item3.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
 
+        //adding items to the arrey
         arrFile = new JMenuItem[]{
             item0,
             item1,
@@ -79,36 +80,36 @@ public class MenuBar extends JMenuBar implements ActionListener {
         item01.setAccelerator(KeyStroke.getKeyStroke("ctrl shift H"));
         item02.setAccelerator(KeyStroke.getKeyStroke("ctrl shift S"));
 
-
-        //array with submenu items
+        //adding array with submenu items
         arrAdresses = new JMenuItem[]{
                 item00,
                 item01,
                 item02
         };
 
-        //new menuItem for "edit" menu
+        //adding menu item for "edit" menu
         JMenu item0 = new JMenu("Adresses");
         addJMenuItems(item0, arrAdresses,false);
-        //array with items from "edit" menu
+
+        //adding items to the "edit" menu
         arrEdit = new JMenuItem[]{item0};
     }
 
     private void createOptionsItems(){
 
-        makeColorItemsTable2();
-        JMenu item0 = new JMenu("Foreground");
-        addJMenuItems(item0,arrCollorItems, false);
+        makeAllColorItemsArray(); // filling the "allColorItems" array with colors
+        JMenu item0 = new JMenu("Foreground"); // creating submenu with foreground colors
+        addJMenuItems(item0,arrCollorItems, false); // adding colors from "allColorItems" array to the "item0" submenu
 
-        makeColorItemsTable2();
+        makeAllColorItemsArray();
         JMenu item1 = new JMenu("Background");
         addJMenuItems(item1,arrCollorItems, false);
 
-        makeFontSizeTable();
+        makeAllFontSizeItemArray();
         JMenu item2 = new JMenu("Font size");
         addJMenuItems(item2,arrFontSizeItems, false);
 
-        //array with items from "options" menu
+        //adding items do the "options" menu
         arrOptions = new JMenuItem[]{
                 item0,
                 item1,
@@ -116,7 +117,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         };
     }
 
-    public void makeColorItemsTable2(){
+    public void makeAllColorItemsArray(){
         String colorsString [] = new String[]{
                 "Green",
                 "Orange",
@@ -150,7 +151,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     }
 
-    public void makeFontSizeTable(){
+    public void makeAllFontSizeItemArray(){
 
         arrFontSizeItems = new JMenuItem[9];
         for(int i = 0; i < arrFontSizeItems.length; i++){
