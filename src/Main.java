@@ -19,6 +19,7 @@ public class Main {
         jf.setLocationRelativeTo(null);
         jf.setLayout(new BorderLayout());
 
+        // 3 main classes
         StatusBar statusBar = new StatusBar();
         EditorTextArea editorTextArea = new EditorTextArea(20,40,statusBar);
         MenuBar menu = new MenuBar(statusBar,editorTextArea,jf);

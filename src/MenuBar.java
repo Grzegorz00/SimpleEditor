@@ -9,21 +9,33 @@ import java.util.Scanner;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
+    // all menus and submenus
     private JMenu menu;
     private JMenuItem arrFile[], arrEdit[], arrOptions[], arrAdresses[], arrCollorItemsFor[], arrCollorItemsBack[], arrFontSizeItems[];
+
+    // variable used in "File" menu
+    private String filePath = null;
+
+    // variables used in "Edit" and "Options" menu
+    private String addressesString[];
+    private Color colors [];
+    private int fontSize[];
+
+    // these classes will be initialise in the constructor
     StatusBar statusBar;
     EditorTextArea editorTextArea;
     JFrame myJFrame;
-    private String filePath = null;
-    private String adressesString[];
-    Color colors [];
-    int fontSize[];
 
     public MenuBar(StatusBar statusBar, EditorTextArea editorTextArea, JFrame myJFrame){
+
+        //adding main classes
         this.statusBar = statusBar;
         this.editorTextArea = editorTextArea;
         this.myJFrame = myJFrame;
-        fillStringAdresses();
+
+        fillStringAddresses();
+
+        /*         Creating all menus         */
 
         //File item
         menu = new JMenu("File");
@@ -41,18 +53,20 @@ public class MenuBar extends JMenuBar implements ActionListener {
         menu = new JMenu("Options");
         createOptionsItems();
         addJMenuItems(menu, arrOptions, false);
-
         add(menu);
     }
 
-    private void fillStringAdresses() {
-        adressesString = new String[]{
+    private void fillStringAddresses() {
+        addressesString = new String[]{
                 "//work adress",
                 "//home adress",
                 "//school adress"
         };
     }
 
+    /*    Creates and fills all menus in the MenuBar    */
+    //main creating methods
+    //adding actonListener's
     private void createFileItems(){
 
         //creating new items
@@ -142,6 +156,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         };
     }
 
+    //additional methods
     public JMenuItem[] makeAllColorItemsArray(){
         String colorsString [] = new String[]{
                 "Green",
@@ -202,6 +217,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         }
     }
 
+    /*    Action Performed methods    */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -217,6 +233,10 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         if(source == arrFile[0]){
             // Open file
+            //
+            //nie usuwa wpisanego tekstu
+            //
+            //
             openFile();
         } else if(source == arrFile[1]){
             // Save file
@@ -238,9 +258,9 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         for(int i = 0; i < arrAdresses.length; i++) {
             if (source == arrAdresses[i]) {
-                editorTextArea.insertTextCarrot(adressesString[i]);
+                editorTextArea.insertTextCarrot(addressesString[i]);
                 statusBar.setFileStatus("modified");
-                i = adressesString.length;
+                i = addressesString.length;
             }
         }
 
@@ -278,6 +298,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     }
 
+
+    /*    Methods used in "File" menu for opening and saving files    */
     private void openFile(){
         JFileChooser fc = new JFileChooser();
         if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){

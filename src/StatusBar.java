@@ -3,9 +3,9 @@ import java.awt.*;
 
 public class StatusBar extends JPanel{
 
+    private JPanel panel = new JPanel();
     private JLabel fileStatus, fg, bg, textSize;
     private ColorButtonIcon fgIcon, bgIcon;
-    private JPanel panel = new JPanel();
 
     public StatusBar(){
         setLayout(new BorderLayout());
@@ -29,10 +29,6 @@ public class StatusBar extends JPanel{
         add(fileStatus, BorderLayout.LINE_END);
     }
 
-    public void setFileStatus(String fileStatus) {
-        this.fileStatus.setText(fileStatus + "  ");
-    }
-
     public void setFgIcon(Color color) {
         this.fg.setIcon(new ColorButtonIcon(color));
     }
@@ -42,5 +38,9 @@ public class StatusBar extends JPanel{
     }
     public void setSize(int size){
         this.textSize.setText(String.valueOf(size));
+    }
+
+    public void setFileStatus(String fileStatus) {
+        this.fileStatus.setText(fileStatus + "  ");
     }
 }
