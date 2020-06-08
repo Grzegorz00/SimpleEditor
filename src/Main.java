@@ -12,8 +12,7 @@ public class Main {
         SwingUtilities.invokeLater(this::createGUI);
     }
 
-    protected void createGUI()
-    {
+    protected void createGUI(){
         JFrame jf = new JFrame();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setLocationRelativeTo(null);
@@ -21,7 +20,7 @@ public class Main {
 
         // 3 main classes
         StatusBar statusBar = new StatusBar();
-        EditorTextArea editorTextArea = new EditorTextArea(20,40,statusBar);
+        EditorTextArea editorTextArea = new EditorTextArea(statusBar);
         MenuBar menu = new MenuBar(statusBar,editorTextArea,jf);
 
         jf.add(menu, BorderLayout.PAGE_START);

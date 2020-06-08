@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 
 public class EditorTextArea extends JPanel{
 
@@ -8,17 +9,16 @@ public class EditorTextArea extends JPanel{
 
     private StatusBar statusBar;
 
-    public EditorTextArea(int rows, int columns, StatusBar statusBar){
-        textArea = new JTextArea(rows,columns);
-
-        textAreaListenner();
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        add(scrollPane);
+    public EditorTextArea(StatusBar statusBar){
+        setLayout(new BorderLayout());
+        textArea = new JTextArea();
+        textAreaListener();
+        add(new JScrollPane(textArea),BorderLayout.CENTER);
+        setPreferredSize(new Dimension(400,300));
         this.statusBar = statusBar;
     }
 
-    private void textAreaListenner() {
+    private void textAreaListener() {
         textArea.getDocument().addDocumentListener(
                 new DocumentListener() {
                     @Override
