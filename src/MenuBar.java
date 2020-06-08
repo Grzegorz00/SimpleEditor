@@ -253,6 +253,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         for(int i = 0; i < arrCollorItemsFor.length; i++) {
             if (source == arrCollorItemsFor[i]) {
                 editorTextArea.textArea.setForeground(colors[i]);
+                statusBar.setFgIcon(colors[i]);
                 i = arrCollorItemsFor.length;
             }
         }
@@ -261,6 +262,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         for(int i = 0; i < arrCollorItemsBack.length; i++) {
             if (source == arrCollorItemsBack[i]) {
                 editorTextArea.textArea.setBackground(colors[i]);
+                statusBar.setBgIcon(colors[i]);
                 i = arrCollorItemsBack.length;
             }
         }
@@ -269,6 +271,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
         for(int i = 0; i < arrFontSizeItems.length; i++) {
             if (source == arrFontSizeItems[i]) {
                 editorTextArea.setFontSize(fontSize[i]);
+                statusBar.setSize(fontSize[i]);
                 i = arrFontSizeItems.length;
             }
         }
