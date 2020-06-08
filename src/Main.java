@@ -9,7 +9,7 @@ public class Main {
     }
 
     public Main(){
-        SwingUtilities.invokeLater(() -> createGUI());
+        SwingUtilities.invokeLater(this::createGUI);
     }
 
     protected void createGUI()

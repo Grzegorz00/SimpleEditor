@@ -3,12 +3,13 @@ import java.awt.*;
 
 public class StatusBar extends JPanel{
 
-    private JPanel panel = new JPanel();
     private JLabel fileStatus, fg, bg, textSize;
     private ColorButtonIcon fgIcon, bgIcon;
 
     public StatusBar(){
         setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
 
         fileStatus = new JLabel();

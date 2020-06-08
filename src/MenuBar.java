@@ -9,17 +9,21 @@ import java.util.Scanner;
 
 public class MenuBar extends JMenuBar implements ActionListener {
 
-    // all menus and submenus
-    private JMenu menu;
-    private JMenuItem arrFile[], arrEdit[], arrOptions[], arrAdresses[], arrCollorItemsFor[], arrCollorItemsBack[], arrFontSizeItems[];
+    private JMenuItem[] arrFile;
+    private JMenuItem[] arrEdit;
+    private JMenuItem[] arrOptions;
+    private JMenuItem[] arrAddresses;
+    private JMenuItem[] arrColorItemsFor;
+    private JMenuItem[] arrColorItemsBack;
+    private JMenuItem[] arrFontSizeItems;
 
     // variable used in "File" menu
     private String filePath = null;
 
     // variables used in "Edit" and "Options" menu
-    private String addressesString[];
-    private Color colors [];
-    private int fontSize[];
+    private String[] addressesString;
+    private Color[] colors;
+    private int[] fontSize;
 
     // these classes will be initialise in the constructor
     StatusBar statusBar;
@@ -38,7 +42,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
         /*         Creating all menus         */
 
         //File item
-        menu = new JMenu("File");
+        // all menus and submenus
+        JMenu menu = new JMenu("File");
         createFileItems();
         addJMenuItems(menu, arrFile, true);
         add(menu);
@@ -108,19 +113,19 @@ public class MenuBar extends JMenuBar implements ActionListener {
         item02.setAccelerator(KeyStroke.getKeyStroke("ctrl shift S"));
 
         //adding array with submenu items
-        arrAdresses = new JMenuItem[]{
+        arrAddresses = new JMenuItem[]{
                 item00,
                 item01,
                 item02
         };
 
         // adding actions
-        for (JMenuItem item : arrAdresses)
+        for (JMenuItem item : arrAddresses)
             item.addActionListener(this);
 
         //adding menu item for "edit" menu
         JMenu item0 = new JMenu("Adresses");
-        addJMenuItems(item0, arrAdresses,false);
+        addJMenuItems(item0, arrAddresses,false);
 
         //adding items to the "edit" menu
         arrEdit = new JMenuItem[]{item0};
@@ -128,22 +133,22 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     private void createOptionsItems(){
 
-        arrCollorItemsFor = makeAllColorItemsArray(); // filling the "allColorItems" array with colors
+        arrColorItemsFor = makeAllColorItemsArray(); // filling the "allColorItems" array with colors
         JMenu item0 = new JMenu("Foreground"); // creating submenu with foreground colors
-        addJMenuItems(item0,arrCollorItemsFor, false); // adding colors from "allColorItems" array to the "item0" submenu
+        addJMenuItems(item0,arrColorItemsFor, false); // adding colors from "allColorItems" array to the "item0" submenu
 
-        arrCollorItemsBack = makeAllColorItemsArray();
+        arrColorItemsBack = makeAllColorItemsArray();
         JMenu item1 = new JMenu("Background");
-        addJMenuItems(item1,arrCollorItemsBack, false);
+        addJMenuItems(item1,arrColorItemsBack, false);
 
         makeAllFontSizeItemArray();
         JMenu item2 = new JMenu("Font size");
         addJMenuItems(item2,arrFontSizeItems, false);
 
         // adding actions
-        for (JMenuItem item : arrCollorItemsFor)
+        for (JMenuItem item : arrColorItemsFor)
             item.addActionListener(this);
-        for (JMenuItem item : arrCollorItemsBack)
+        for (JMenuItem item : arrColorItemsBack)
             item.addActionListener(this);
         for (JMenuItem item : arrFontSizeItems)
             item.addActionListener(this);
@@ -158,7 +163,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     //additional methods
     public JMenuItem[] makeAllColorItemsArray(){
-        String colorsString [] = new String[]{
+        String[] colorsString = new String[]{
                 "Green",
                 "Orange",
                 "Red",
@@ -177,18 +182,18 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 Color.blue
         };
 
-        JMenuItem arrCollorItems[] =  new JRadioButtonMenuItem[colors.length];
+        JMenuItem[] arrColorItems =  new JRadioButtonMenuItem[colors.length];
 
         for (int i = 0; i < colors.length; i++){
-            arrCollorItems[i] = new JRadioButtonMenuItem(colorsString[i], new ColorButtonIcon(colors[i]));
-            arrCollorItems[i].setForeground(colors[i]);
+            arrColorItems[i] = new JRadioButtonMenuItem(colorsString[i], new ColorButtonIcon(colors[i]));
+            arrColorItems[i].setForeground(colors[i]);
         }
 
         ButtonGroup buttonGroup = new ButtonGroup();
-        for(JMenuItem item : arrCollorItems){
+        for(JMenuItem item : arrColorItems){
             buttonGroup.add(item);
         }
-        return arrCollorItems;
+        return arrColorItems;
     }
 
     public void makeAllFontSizeItemArray(){
@@ -206,7 +211,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
     }
 
-    public void addJMenuItems(JMenu menu, JMenuItem arrMI[], boolean separator){
+    public void addJMenuItems(JMenu menu, JMenuItem[] arrMI, boolean separator){
         for(int i = 0; i< arrMI.length; i++) {
             if(separator && i == arrMI.length - 1){
                 JSeparator jSeparator = new JSeparator();
@@ -233,18 +238,15 @@ public class MenuBar extends JMenuBar implements ActionListener {
 
         if(source == arrFile[0]){
             // Open file
-            //
-            //nie usuwa wpisanego tekstu
-            //
-            //
             openFile();
+            myJFrame.setTitle("Simple editor - " + filePath);
         } else if(source == arrFile[1]){
             // Save file
-            savingFile(filePath);
+            savingFile(false);
             myJFrame.setTitle("Simple editor - " + filePath);
         } else if(source == arrFile[2]){
             // Save as file
-            savingFile(null);
+            savingFile(true);
             myJFrame.setTitle("Simple editor - " + filePath);
         }
         if(source == arrFile[3]){
@@ -256,8 +258,8 @@ public class MenuBar extends JMenuBar implements ActionListener {
     private void arrEditActions(ActionEvent e) {
         Object source = e.getSource();
 
-        for(int i = 0; i < arrAdresses.length; i++) {
-            if (source == arrAdresses[i]) {
+        for(int i = 0; i < arrAddresses.length; i++) {
+            if (source == arrAddresses[i]) {
                 editorTextArea.insertTextCarrot(addressesString[i]);
                 statusBar.setFileStatus("modified");
                 i = addressesString.length;
@@ -270,20 +272,20 @@ public class MenuBar extends JMenuBar implements ActionListener {
         Object source = e.getSource();
 
         //foreground actions
-        for(int i = 0; i < arrCollorItemsFor.length; i++) {
-            if (source == arrCollorItemsFor[i]) {
+        for(int i = 0; i < arrColorItemsFor.length; i++) {
+            if (source == arrColorItemsFor[i]) {
                 editorTextArea.textArea.setForeground(colors[i]);
                 statusBar.setFgIcon(colors[i]);
-                i = arrCollorItemsFor.length;
+                i = arrColorItemsFor.length;
             }
         }
 
         //background actions
-        for(int i = 0; i < arrCollorItemsBack.length; i++) {
-            if (source == arrCollorItemsBack[i]) {
+        for(int i = 0; i < arrColorItemsBack.length; i++) {
+            if (source == arrColorItemsBack[i]) {
                 editorTextArea.textArea.setBackground(colors[i]);
                 statusBar.setBgIcon(colors[i]);
-                i = arrCollorItemsBack.length;
+                i = arrColorItemsBack.length;
             }
         }
 
@@ -304,22 +306,24 @@ public class MenuBar extends JMenuBar implements ActionListener {
         JFileChooser fc = new JFileChooser();
         if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
             filePath = fc.getSelectedFile().getAbsolutePath();
-            try {
-                File file = new File(filePath);
-                Scanner scanner = new Scanner(file);
-                while (scanner.hasNext()){
-                    editorTextArea.appendText(scanner.nextLine() + "\n");
-                }
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-            statusBar.setFileStatus("saved");
+        } else {
+            return;
         }
+        try {
+            Scanner scanner = new Scanner(new File(filePath));
+            editorTextArea.setText("");
+            while (scanner.hasNext()){
+                editorTextArea.appendText(scanner.nextLine() + "\n");
+            }
+            scanner.close();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        statusBar.setFileStatus("saved");
     }
 
-    private void savingFile(String filePath){
-        if(filePath == null){
-            System.out.println("kurwa dlaczego");
+    private void savingFile(boolean saveAs){
+        if(filePath == null || saveAs){
             JFileChooser fc = new JFileChooser();
             if (fc.showSaveDialog(null) != JFileChooser.CANCEL_OPTION)
                 filePath = fc.getSelectedFile().getAbsolutePath();
@@ -330,7 +334,7 @@ public class MenuBar extends JMenuBar implements ActionListener {
                 PrintWriter pw = new PrintWriter(file);
                 Scanner scanner = new Scanner(editorTextArea.getText());
                 while (scanner.hasNext())
-                    pw.println(scanner.nextLine() + "\n");
+                    pw.println(scanner.nextLine());
                 pw.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

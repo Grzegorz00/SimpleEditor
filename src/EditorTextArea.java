@@ -6,24 +6,14 @@ public class EditorTextArea extends JPanel{
 
     JTextArea textArea;
 
-    private JScrollPane scrollPane;
     private StatusBar statusBar;
 
     public EditorTextArea(int rows, int columns, StatusBar statusBar){
         textArea = new JTextArea(rows,columns);
-        //???????????????
-        //???????????????
-        //???????????????
-        // jak powiekszysz ekran nie powieksza się pole tekstowe
-        //
-        //fajniej by było jak byś zrobił funckje set Foreground text area jako prywatne
-        //???????????????
-        //???????????????
 
         textAreaListenner();
 
-
-        scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane);
         this.statusBar = statusBar;
     }
@@ -54,6 +44,10 @@ public class EditorTextArea extends JPanel{
     }
 
     //setters
+    public void setText(String text){
+        textArea.setText(text);
+    }
+
     public void appendText(String text){
         textArea.append(text);
     }
@@ -64,12 +58,4 @@ public class EditorTextArea extends JPanel{
     public void setFontSize(int size){
         textArea.setFont(getFont().deriveFont((float)size));
     }
-
-     /*public void setForeground(Color color){
-        textArea.setForeground(Color.green);
-    }
-
-    public void setForeground(Color color){
-        textArea.setBackground(Color.green);
-    }*/
 }
